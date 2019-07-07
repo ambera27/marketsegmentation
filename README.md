@@ -4,7 +4,7 @@ In the following project I am a creative designer at Nike. Nike is an American r
 
 The target population I am interested in is going to be the entire US adult population. While it is a bit broad, I picked this population because I would like to get an idea of what the ideal customer would look like for this type of product. Since this will be Nike’s attempt to enter a new niche market, we do not want to start the analysis with a segment in mind and leave out potential buyers. 
 
-I have included the SAS (.egp) file which goes over the variable selection and data cleaning process, as well as dimentionality reduction and clustering techniques. This code can also be found in a word doc just in case the file extention is an issue. I also included an R (.Rmd) file which includes a few additional assumption tests for the dimentionality reduction and clustering techniques. 
+I have included the SAS (.egp) file which goes over the variable selection and data cleaning process, as well as dimensionality reduction and clustering techniques. This code can also be found in a word doc just in case the file extention is an issue. I also included an R (.Rmd) file which reviews a few additional assumption tests for the dimentionality reduction and clustering techniques. 
 
 If you should have any questions about the code or analysis please feel free to reach out! 
 
