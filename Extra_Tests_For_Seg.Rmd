@@ -1,0 +1,83 @@
+---
+title: "Extra Tests for Segmentation"
+author: "Amber Arriaga"
+date: "7/7/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+#load library
+library(readxl)
+library(factoextra)
+library(cluster)
+library(NbClust)
+library(psych)
+
+#loading in the  dataset 
+questions <- read_excel("~/Dropbox/GitHub_Code/MarketSegmentation/factors.xlsx")
+
+#extracting only the variables needed for analysis 
+questions<- questions[,2:9]
+questions <- na.omit(questions)
+
+```
+
+Since the survey uses the Likert scale, I can infer that the response data is ordinal and should use Spearman correlation to analyze the correlation between the selected questions. 
+
+From the correlation plot below, I can see that there are moderate to strong  correlations between the questions I hypothesized would get grouped together in the PCA.  This makes me hopeful that I selected appropriate questions. After running the analysis, both factors generated were located on the same side leading me to assume that I should proceed using varimax PCA.
+```{r}
+#checking correlation between questions selected
+spear = lowerCor(questions, method = "spearman")
+
+#getting visual
+corPlot(spear, main = " Spearman Correlation Plot")
+```
+
+
+Before running the factor analysis I need to do some due diligence and check to see if  the data is even suitable using Kaiser-Meyer-Olkin (KMO) test and Bartlett ‘s test of sphericity. 
+
+Bartlett's Test of Sphericity: will assess the intercorrelation amongst the selected variables, and should be found statistically significant in order to perform factor analysis. 
+```{r}
+cortest.bartlett(questions) 
+#with a p-value of less than 1, I can conclude that the Bartlett test is statistically significant and can be more confident with the analysis moving forward
+```
+
+Kaiser-Meyer-Olkin test: looks at partial correlations within the data and is  essentially a better measure of factorability. The minimum acceptable value for this test is 0.5.
+```{r}
+KMO(questions) 
+#this test gives an overall MSA of 0.77 which is not fabulous, but definitely acceptable. 
+#analyzing the individual MSA scores I noticed that the first four question, what I hope to be the Environment Enthusiast factor, has greater sampling adequacy than the second four questions, what I hope to be the Fashion Forward factor.
+```
+
+
+To determine the number of factors to extract I will be leveraging two different techniques to determine the appropriate number of factors parallel analysis and scree plot. 
+
+
+The scree plot visually displays the eigenvalues per factor. After analyzing the plot below, I think two factors is the appropriate solution for this dataset. I settled on two factors as both the factors and principal components show two eigenvalues greater than one.
+```{r}
+scree(questions)
+```
+
+
+In addition to plotting the eigenvalues from the factor analysis, a parallel analysis also generates random correlation matrices and compares the resulting eigenvalues to the eigenvalues of the observed data. This additional step makes the parallel analysis a bit better than an ordinary scree plot, as the observed eigenvalues that are higher than their corresponding random eigenvalues are more likely to be from meaningful factors. The plot below suggests that I should proceed with  at most three factors and two principal components. 
+```{r}
+fa.parallel(questions)
+```
+
+
+Plotting out the ideal number of clusters to get a better visual representation of the data 
+```{r}
+cluster.data <- read_excel("~/Dropbox/GitHub_Code/MarketSegmentation/letscluster.xlsx")
+cluster.data <- cluster.data[,2:5]
+
+cluster.data <- na.omit(cluster.data)
+
+k2 <- kmeans(cluster.data, centers = 3, nstart = 25)
+
+fviz_cluster(k2, data = cluster.data,geom = "point", ellipse.type = "convex", main = "Cluster plot") + theme_bw()
+```
