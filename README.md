@@ -8,4 +8,4 @@ I have included the SAS (.egp) file which goes over the variable selection and d
 
 If you should have any questions about the code or analysis please feel free to reach out! 
 
--Amber 
+-Amber Arriaga
